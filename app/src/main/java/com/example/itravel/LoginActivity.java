@@ -54,24 +54,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
+        int id = v.getId();
 
-        switch (v.getId()) {
-
-            case R.id.btn_back:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
-
-            case R.id.login_button:
-                userLogin();
-                break;
-
-            case R.id.forget_password:
-                startActivity(new Intent(getApplicationContext(), ForgetPasswordActivity.class));
-                break;
+        if (id == R.id.btn_back) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else if (id == R.id.login_button) {
+            userLogin();
+        } else if (id == R.id.forget_password) {
+            startActivity(new Intent(getApplicationContext(), ForgetPasswordActivity.class));
         }
     }
-
     private void userLogin() {
 
         String email    = email_login.getText().toString().trim();

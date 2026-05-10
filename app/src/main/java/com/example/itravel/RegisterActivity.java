@@ -57,23 +57,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return "+"+ ccp.getFullNumber() + phone_re.getText().toString().trim();
     }
 
-    // Buttons action -
-    @SuppressLint("NonConstantResourceId")
+    // Buttons action
     @Override
     public void onClick(View v) {
+        int id = v.getId();
 
-        switch (v.getId()) {
-            case R.id.btn_back :
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-
-            case R.id.register_button :
-                registerUser();
-                break;
+        if (id == R.id.btn_back) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.register_button) {
+            registerUser();
         }
-
     }
 
     private void registerUser() {
