@@ -1,6 +1,7 @@
 package com.example.itravel;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -59,7 +60,9 @@ public class HomeActivity extends AppCompatActivity {
                 posts = new ArrayList<>();
                 for (DataSnapshot postsSnap: snapshot.getChildren()){
                     Post post = postsSnap.getValue(Post.class);
-                    posts.add(post);
+                    if (post != null) {
+                        posts.add(post);
+                    }
                 }
                 //add data to our postAdapter
                 postAdapter = new PostAdapter(posts);
@@ -104,27 +107,43 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         weather = findViewById(R.id.weather);
-        weather.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, WeatherActivity.class);
-                startActivity(intent);
+        if (weather != null) {
+            weather.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(HomeActivity.this, WeatherActivity.class);
+                    startActivity(intent);
 
-            }
-        });
+                }
+            });
+        }
 
         FloatingActionsMenu floatingMenu = findViewById(R.id.fab_menu);
-        ((FloatingActionsMenu)floatingMenu).setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
-            @Override
-            public void onMenuExpanded() {
-                findViewById(R.id.main_home_layout).getBackground().setAlpha(128); //change opacity here
-            }
+        if (floatingMenu != null) {
+            floatingMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+                @Override
+                public void onMenuExpanded() {
+                    View homeLayout = findViewById(R.id.main_home_layout);
+                    if (homeLayout != null) {
+                        Drawable bg = homeLayout.getBackground();
+                        if (bg != null) {
+                            bg.setAlpha(128);
+                        }
+                    }
+                }
 
-            @Override
-            public void onMenuCollapsed() {
-                findViewById(R.id.main_home_layout).getBackground().setAlpha(64); //change opacity here
-            }
-        });
+                @Override
+                public void onMenuCollapsed() {
+                    View homeLayout = findViewById(R.id.main_home_layout);
+                    if (homeLayout != null) {
+                        Drawable bg = homeLayout.getBackground();
+                        if (bg != null) {
+                            bg.setAlpha(64);
+                        }
+                    }
+                }
+            });
+        }
 
         profile = findViewById(R.id.view_profile);
         profile.setOnClickListener(new View.OnClickListener() {
@@ -142,43 +161,47 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         update_profile = findViewById(R.id.profile_setting);
-        update_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (update_profile != null) {
+            update_profile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        User userProfile = snapshot.getValue(User.class);
+                            User userProfile = snapshot.getValue(User.class);
 
-                        if (userProfile != null) {
+                            if (userProfile != null) {
 
-                            String username = userProfile.username;
-                            String email = userProfile.email;
-                            String phone = userProfile.phone;
+                                String username = userProfile.username;
+                                String email = userProfile.email;
+                                String phone = userProfile.phone;
 
-                            Intent i = new Intent(v.getContext(), EditProfileActivity.class);
+                                Intent i = new Intent(v.getContext(), EditProfileActivity.class);
 
-                            i.putExtra("username", username);
-                            i.putExtra("email", email);
-                            i.putExtra("phone", phone);
+                                i.putExtra("username", username);
+                                i.putExtra("email", email);
+                                i.putExtra("phone", phone);
 
-                            startActivity(i);
+                                startActivity(i);
+                            } else {
+                                Toast.makeText(HomeActivity.this, "User profile not found.", Toast.LENGTH_SHORT).show();
+                            }
+
                         }
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(HomeActivity.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(HomeActivity.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
 
-            }
+                }
 
-        });
+            });
+        }
 
     }
 
