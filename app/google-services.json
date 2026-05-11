@@ -1,37 +1,26 @@
 {
   "project_info": {
-    "project_number": "143822533174",
-    "firebase_url": "https://itravel-12e71-default-rtdb.firebaseio.com",
-    "project_id": "itravel-12e71",
-    "storage_bucket": "itravel-12e71.appspot.com"
+    "project_number": "5970633776",
+    "project_id": "itravel-app-94fd4",
+    "storage_bucket": "itravel-app-94fd4.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:143822533174:android:ca23ed975f79b0738e5e97",
+        "mobilesdk_app_id": "1:5970633776:android:33cdf16d9ebece362ff9f5",
         "android_client_info": {
           "package_name": "com.example.itravel"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "143822533174-lopkvnof14lda1o0r3cj4hknbjv99qlo.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDv5hon4Q2ZSOzGm95dbCjGreyt6_pKqd8"
+          "current_key": "AIzaSyAQLRy4A5c6PcD2JkxJs2vKUlZhydKbqKU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "143822533174-lopkvnof14lda1o0r3cj4hknbjv99qlo.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
