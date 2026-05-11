@@ -103,7 +103,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     finish();
                 }
                 else {
-                    Toast.makeText(LoginActivity.this, "Failed to Login !", Toast.LENGTH_SHORT).show();
+                    String errorMessage = task.getException() != null
+                            ? task.getException().getMessage()
+                            : "Failed to login.";
+                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                 }
 
             }

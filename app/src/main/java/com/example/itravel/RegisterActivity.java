@@ -47,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btn_register.setOnClickListener(this);
 
         ccp = findViewById(R.id.ccp);
+        ccp.registerCarrierNumberEditText(phone_re);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -54,7 +55,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     // Get Number with Country Code : Example = +216 93 107 7015
     public String getNumber() {
-        return "+"+ ccp.getFullNumber() + phone_re.getText().toString().trim();
+        String localPhone = phone_re.getText().toString().trim();
+        if (localPhone.isEmpty()) {
+            return "";
+        }
+        String countryCode = ccp.getSelectedCountryCodeWithPlus();
+        return countryCode + localPhone;
     }
 
     // Buttons action
@@ -138,12 +144,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             if (task.isSuccessful()) {
 
                                 User user = new User(username, email, phone, image_url);
+                                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                                    dialog.dismiss();
+                                    Toast.makeText(RegisterActivity.this, "User session could not be created. Please try again.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
 
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
+                                        dialog.dismiss();
 
                                         if (task.isSuccessful()) {
                                             Toast.makeText(RegisterActivity.this, "You have been registered successfully!", Toast.LENGTH_SHORT).show();
@@ -154,16 +166,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             finish();
 
                                         } else {
-                                            Toast.makeText(RegisterActivity.this, "Failed to register! please Try again!", Toast.LENGTH_SHORT).show();
+                                            String errorMessage = task.getException() != null
+                                                    ? task.getException().getMessage()
+                                                    : "Failed to save user profile.";
+                                            Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 });
 
+                            } else {
+                                dialog.dismiss();
+                                String errorMessage = task.getException() != null
+                                        ? task.getException().getMessage()
+                                        : "Failed to register user.";
+                                Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                             }
                         }
                     });
-
-            dialog.cancel();
 
 
     }
