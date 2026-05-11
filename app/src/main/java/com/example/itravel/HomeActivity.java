@@ -84,6 +84,12 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "Session expired, please login again.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+            return;
+        }
         reference = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
 

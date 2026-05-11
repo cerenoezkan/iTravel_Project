@@ -96,6 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                dialog.dismiss();
                 if (task.isSuccessful()) {
                     // redirect to Home layout
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
@@ -107,8 +108,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
-
-        dialog.cancel();
 
     }
 }
