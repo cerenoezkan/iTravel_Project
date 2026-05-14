@@ -47,6 +47,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth = FirebaseAuth.getInstance();
 
+        if (mAuth.getCurrentUser() != null
+                && SessionManager.isUserRole(this)
+                && !SessionManager.isCurrentUserAdminEmail()) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+            return;
+        }
 
     }
 
@@ -57,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int id = v.getId();
 
         if (id == R.id.btn_back) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, RoleSelectionActivity.class));
             finish();
         } else if (id == R.id.login_button) {
             userLogin();
@@ -89,6 +96,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
+        if (SessionManager.ADMIN_EMAIL.equalsIgnoreCase(email.trim())) {
+            Toast.makeText(this, R.string.use_admin_entry_for_admin, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Wait a little bit please");
         dialog.show();
@@ -98,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<AuthResult> task) {
                 dialog.dismiss();
                 if (task.isSuccessful()) {
-                    // redirect to Home layout
+                    SessionManager.setUserRole(LoginActivity.this);
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     finish();
                 }

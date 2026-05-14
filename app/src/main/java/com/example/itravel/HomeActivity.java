@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.itravel.Adapter.PostAdapter;
-import com.example.itravel.Model.Post;
+import com.example.itravel.Adapter.PlaceAdapter;
+import com.example.itravel.Model.Place;
 import com.example.itravel.Model.User;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -34,8 +34,8 @@ public class HomeActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private String userID;
     private RecyclerView rv_posts;
-    private List<Post> posts;
-    private PostAdapter postAdapter;
+    private List<Place> places;
+    private PlaceAdapter placeAdapter;
     Button weather, map, addPost, logout;
 
     FloatingActionButton profile, update_profile;
@@ -51,22 +51,21 @@ public class HomeActivity extends AppCompatActivity {
         rv_posts.setHasFixedSize(true);
 
         // recycler fetch and send data.
-        FirebaseDatabase pdb = FirebaseDatabase.getInstance();
-        DatabaseReference pref = pdb.getReference().child("Posts");
+        FirebaseDatabase pdb = FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL);
+        DatabaseReference pref = pdb.getReference(ItravelApp.RTDB_NODE_PLACES);
 
         pref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                posts = new ArrayList<>();
-                for (DataSnapshot postsSnap: snapshot.getChildren()){
-                    Post post = postsSnap.getValue(Post.class);
-                    if (post != null) {
-                        posts.add(post);
+                places = new ArrayList<>();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    Place place = Place.fromSnapshot(child);
+                    if (place != null && place.getId() != null && !place.getId().isEmpty()) {
+                        places.add(place);
                     }
                 }
-                //add data to our postAdapter
-                postAdapter = new PostAdapter(posts);
-                rv_posts.setAdapter(postAdapter);
+                placeAdapter = new PlaceAdapter(places);
+                rv_posts.setAdapter(placeAdapter);
             }
 
             @Override
@@ -80,9 +79,7 @@ public class HomeActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
+                SessionManager.signOutAndReturnToRoleSelection(HomeActivity.this);
             }
         });
 
@@ -93,10 +90,23 @@ public class HomeActivity extends AppCompatActivity {
             finish();
             return;
         }
-        reference = FirebaseDatabase.getInstance().getReference("Users");
+
+        if (!SessionManager.isUserRole(this)) {
+            if (SessionManager.isAdminSession(this)) {
+                startActivity(new Intent(this, AdminPanelActivity.class));
+            } else {
+                Toast.makeText(this, "Session expired, please login again.", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            }
+            finish();
+            return;
+        }
+
+        reference = FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL).getReference("Users");
         userID = user.getUid();
 
         addPost = findViewById(R.id.btn_post);
+        addPost.setVisibility(View.GONE);
 
         map = findViewById(R.id.btn_map);
         map.setOnClickListener(new View.OnClickListener() {
@@ -150,13 +160,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-            }
-        });
-
-        addPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PostActivity.class));
             }
         });
 

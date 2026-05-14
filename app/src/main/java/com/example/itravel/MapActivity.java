@@ -1,7 +1,5 @@
 package com.example.itravel;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,18 +11,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.itravel.Model.Post;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.itravel.Model.Place;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +41,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     boolean isPermissionGranter;
     GoogleMap googleMap;
 
-    private DatabaseReference places;
+    private DatabaseReference placesRef;
+    private ValueEventListener placesListener;
 
     Button logout;
 
@@ -56,16 +56,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
+                SessionManager.signOutAndReturnToRoleSelection(MapActivity.this);
             }
         });
 
-
-        places = FirebaseDatabase.getInstance().getReference("Posts");
+        placesRef = FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL)
+                .getReference(ItravelApp.RTDB_NODE_PLACES);
 
         checkPermission();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (placesRef != null && placesListener != null) {
+            placesRef.removeEventListener(placesListener);
+        }
     }
 
     private boolean checkGooglePlayGrancted() {
@@ -85,8 +91,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return false;
     }
 
-
-    // verify permission accepted or not :
     private void checkPermission() {
         Dexter.withContext(this)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -131,46 +135,62 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         this.googleMap = googleMap;
 
+        googleMap.setOnMarkerClickListener(marker -> {
+            Object tag = marker.getTag();
+            if (tag instanceof String) {
+                DetailActivity.launch(MapActivity.this, (String) tag);
+            }
+            return true;
+        });
 
-        places.addListenerForSingleValueEvent(new ValueEventListener() {
+        if (placesListener != null) {
+            placesRef.removeEventListener(placesListener);
+        }
+
+        placesListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot s : snapshot.getChildren()) {
-                    Post postmarker = s.getValue(Post.class);
-                    if (postmarker == null) {
+                googleMap.clear();
+
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    Place place = Place.fromSnapshot(child);
+                    if (place == null) {
                         continue;
                     }
-                    String latText = postmarker.getLatitude();
-                    String lngText = postmarker.getLongitude();
-                    if (latText == null || lngText == null || latText.trim().isEmpty() || lngText.trim().isEmpty()) {
+                    String placeId = child.getKey();
+                    if (placeId == null || placeId.isEmpty()) {
                         continue;
                     }
-                    LatLng latLng;
-                    try {
-                        latLng = new LatLng(Double.parseDouble(latText), Double.parseDouble(lngText));
-                    } catch (NumberFormatException e) {
+
+                    LatLng latLng = latLngFromPlace(place);
+                    if (latLng == null) {
                         continue;
+                    }
+
+                    String markerTitle = nz(place.getTitle());
+                    if (markerTitle.isEmpty()) {
+                        markerTitle = getString(R.string.place_detail_untitled);
                     }
 
                     MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.title(postmarker.getPlace()+" : " + latLng.latitude + " , " + latLng.longitude);
+                    markerOptions.title(markerTitle);
+                    markerOptions.snippet(latLng.latitude + ", " + latLng.longitude);
                     markerOptions.position(latLng);
-                    googleMap.addMarker(markerOptions);
+                    Marker marker = googleMap.addMarker(markerOptions);
+                    if (marker != null) {
+                        marker.setTag(placeId);
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(MapActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        });
-
-
-
-
+        };
+        placesRef.addValueEventListener(placesListener);
 
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.getUiSettings().setCompassEnabled(true);
@@ -180,6 +200,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (isPermissionGranter) {
             googleMap.setMyLocationEnabled(true);
         }
+    }
 
+    @Nullable
+    private static LatLng latLngFromPlace(@NonNull Place place) {
+        try {
+            String la = place.getLatitude();
+            String lo = place.getLongitude();
+            if (la == null || lo == null) {
+                return null;
+            }
+            la = la.trim();
+            lo = lo.trim();
+            if (la.isEmpty() || lo.isEmpty()) {
+                return null;
+            }
+            return new LatLng(Double.parseDouble(la), Double.parseDouble(lo));
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private static String nz(@Nullable String s) {
+        return s != null ? s : "";
     }
 }

@@ -162,12 +162,47 @@
             android:paddingEnd="10dp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/description_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/longitude_field"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:text="Kısa bilgi (isteğe bağlı)"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/description_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="35dp"
+            android:minLines="3"
+            android:gravity="top|start"
+            android:background="@drawable/edit_text_style1"
+            android:hint="Örn. tarihçe, ziyaret saatleri..."
+            android:inputType="textMultiLine|textCapSentences"
+            android:paddingStart="15sp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp" />
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/set_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/longitude_field"
+        android:layout_below="@id/description_field"
         android:layout_marginLeft="35dp"
         android:layout_marginRight="35dp"
         android:layout_marginTop="20dp"

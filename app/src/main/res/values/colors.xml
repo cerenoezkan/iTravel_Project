@@ -11,5 +11,21 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#FF14502E</color>
     <color name="gray">#FF6C6767</color>
+    <color name="detail_bg">#FFF5F3EF</color>
+    <color name="detail_muted">#FF8A8580</color>
+    <color name="detail_card">#FFFFFFFF</color>
+
+    <!-- Role selection / premium travel splash -->
+    <color name="role_gradient_top">#051F1A</color>
+    <color name="role_gradient_mid">#0F3D2E</color>
+    <color name="role_gradient_bottom">#1A5C45</color>
+    <color name="role_horizon_glow">#6BA88C</color>
+    <color name="role_scrim">#66051A14</color>
+    <color name="role_cream">#FFF7F4EC</color>
+    <color name="role_surface_glass">#E6FFFFFF</color>
+    <color name="role_on_dark_secondary">#CCF0F4F0</color>
+    <color name="role_primary_cta">#FF14502E</color>
+    <color name="role_primary_cta_pressed">#FF0D3A22</color>
+    <color name="role_outline_light">#99FFFFFF</color>
 
 </resources>

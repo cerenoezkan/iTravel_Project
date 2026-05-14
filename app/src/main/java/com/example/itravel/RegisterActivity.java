@@ -97,6 +97,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             email_re.requestFocus();
             return;        }
 
+        if (SessionManager.ADMIN_EMAIL.equalsIgnoreCase(email.trim())) {
+            Toast.makeText(this, R.string.admin_email_reserved, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         // verify that email is written correct (xyz@xyz.xyz)
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             email_re.setError("Please provide valid email!");
@@ -150,7 +155,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     return;
                                 }
 
-                                FirebaseDatabase.getInstance().getReference("Users")
+                                FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL).getReference("Users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -159,9 +164,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                                         if (task.isSuccessful()) {
                                             Toast.makeText(RegisterActivity.this, "You have been registered successfully!", Toast.LENGTH_SHORT).show();
-
-                                            // redirect to Main Layout to choose Login or Register action
-                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                            SessionManager.setUserRole(RegisterActivity.this);
+                                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                             startActivity(intent);
                                             finish();
 

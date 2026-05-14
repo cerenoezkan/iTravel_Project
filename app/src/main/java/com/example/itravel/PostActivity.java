@@ -8,16 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.canhub.cropper.CropImage;
-import com.canhub.cropper.CropImageContract;
-import com.canhub.cropper.CropImageContractOptions;
-import com.canhub.cropper.CropImageOptions;
-import com.canhub.cropper.CropImageView;
-import com.example.itravel.Model.Post;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.example.itravel.Model.Place;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -38,88 +36,170 @@ public class PostActivity extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseStorage storage;
 
-    private final androidx.activity.result.ActivityResultLauncher<CropImageContractOptions> cropImage =
-            registerForActivityResult(new CropImageContract(), result -> {
-                if (result.isSuccessful()) {
-                    imageUrl = result.getUriContent();
-                    post_image.setImageURI(imageUrl);
-                }
-            });
+    // FOTOĞRAF SEÇME
+    private final ActivityResultLauncher<String> pickImage =
+            registerForActivityResult(new ActivityResultContracts.GetContent(),
+                    uri -> {
+                        if (uri != null) {
+                            imageUrl = uri;
+                            post_image.setImageURI(uri);
+                        }
+                    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!SessionManager.isAdminSession(this)) {
+            Toast.makeText(this, R.string.admin_area_only, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_post);
 
         post_image = findViewById(R.id.post_image);
         placeET = findViewById(R.id.post_edit);
         latET = findViewById(R.id.latitude_edit);
         lonET = findViewById(R.id.longitude_edit);
+        final EditText descriptionET = findViewById(R.id.description_edit);
         btn_cancel = findViewById(R.id.btn_return);
         btn_save = findViewById(R.id.set_post);
 
-        mDatabase = FirebaseDatabase.getInstance();
-        reference = mDatabase.getReference().child("Posts");
+        mDatabase = FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL);
+        reference = mDatabase.getReference(ItravelApp.RTDB_NODE_PLACES);
         storage = FirebaseStorage.getInstance();
 
         progressDialog = new ProgressDialog(this);
 
+        // KAYDET BUTONU
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 final String place = placeET.getText().toString().trim();
                 final String lat = latET.getText().toString().trim();
                 final String lon = lonET.getText().toString().trim();
 
-                if (!(place.isEmpty() && lat.isEmpty() && lon.isEmpty() && imageUrl == null)) {
-                    progressDialog.setTitle("Uploading ...");
-                    progressDialog.show();
-                    StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("imagePost");
-                    final StorageReference imagePathFile = storageRef.child(imageUrl.getLastPathSegment());
-                    imagePathFile.putFile(imageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            imagePathFile.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String imageDownloadLink = uri.toString();
-                                    Post post = new Post(placeET.getText().toString(), latET.getText().toString(), lonET.getText().toString(), imageDownloadLink);
-                                    FirebaseDatabase db = FirebaseDatabase.getInstance();
-                                    DatabaseReference refPost = db.getReference("Posts").push();
-                                    refPost.setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            progressDialog.dismiss();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
+                if (place.isEmpty() || lat.isEmpty() || lon.isEmpty()) {
+                    Toast.makeText(PostActivity.this,
+                            "Mekân adı, enlem ve boylam zorunludur.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                if (imageUrl == null) {
+                    Toast.makeText(PostActivity.this,
+                            "Lütfen bir fotoğraf seçin.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                progressDialog.setTitle("Uploading...");
+                progressDialog.show();
+
+                StorageReference storageRef =
+                        FirebaseStorage.getInstance()
+                                .getReference()
+                                .child("imagePost");
+
+                final StorageReference imagePathFile =
+                        storageRef.child(System.currentTimeMillis() + ".jpg");
+
+                imagePathFile.putFile(imageUrl)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                imagePathFile.getDownloadUrl()
+                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+
+                                                String imageDownloadLink = uri.toString();
+
+                                                String desc = descriptionET.getText().toString().trim();
+
+                                                DatabaseReference refPost = reference.push();
+                                                String placeId = refPost.getKey();
+                                                if (placeId == null) {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(PostActivity.this,
+                                                            "Kayıt anahtarı oluşturulamadı.",
+                                                            Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                }
+
+                                                Place place = new Place(
+                                                        placeId,
+                                                        placeET.getText().toString().trim(),
+                                                        desc.isEmpty() ? null : desc,
+                                                        latET.getText().toString().trim(),
+                                                        lonET.getText().toString().trim(),
+                                                        imageDownloadLink
+                                                );
+
+                                                refPost.setValue(place)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+
+                                                                progressDialog.dismiss();
+
+                                                                Intent intent =
+                                                                        new Intent(getApplicationContext(),
+                                                                                AdminPanelActivity.class);
+
+                                                                startActivity(intent);
+                                                                finish();
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(e -> {
+                                                            progressDialog.dismiss();
+                                                            Toast.makeText(PostActivity.this,
+                                                                    "Veritabanı kaydı başarısız: " + e.getMessage(),
+                                                                    Toast.LENGTH_LONG).show();
+                                                            e.printStackTrace();
+                                                        });
+                                            }
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(PostActivity.this,
+                                                    "İndirme bağlantısı alınamadı: " + e.getMessage(),
+                                                    Toast.LENGTH_LONG).show();
+                                            e.printStackTrace();
+                                        });
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            progressDialog.dismiss();
+                            Toast.makeText(PostActivity.this,
+                                    "Yükleme başarısız (Storage kuralları / ağ): " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        });
             }
         });
 
+        // FOTOĞRAF SEÇME
         post_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startCropActivity();
+                pickImage.launch("image/*");
             }
         });
 
+        // GERİ DÖN
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+
+                Intent intent =
+                        new Intent(getApplicationContext(), AdminPanelActivity.class);
+
                 startActivity(intent);
                 finish();
             }
         });
-    }
-
-    private void startCropActivity() {
-        cropImage.launch(
-                new CropImageContractOptions(null, new CropImageOptions())
-        );
     }
 }

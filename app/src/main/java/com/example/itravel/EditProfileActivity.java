@@ -73,7 +73,7 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
 
-        rootDatabaseref = FirebaseDatabase.getInstance().getReference().child("Users");
+        rootDatabaseref = FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL).getReference().child("Users");
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override

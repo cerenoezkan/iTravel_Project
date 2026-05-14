@@ -12,6 +12,12 @@ public class MainActivity extends AppCompatActivity {
     Button btn_login, btn_register;
 
     @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, RoleSelectionActivity.class));
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

@@ -1,7 +1,8 @@
 <resources>
 
     <string name="app_name">Itravel</string>
-
+    <string name="role_card_title">Keşfet. Planla. Yolculuk et.</string>
+    <string name="role_card_subtitle">Unutulmaz deneyimler seni bekliyor.</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_in">Sign in</string>
     <string name="back">BACK</string>
@@ -17,5 +18,54 @@
     <string name="cover_pic">COVER PIC</string>
     <string name="add_a_new_post">Add a new post</string>
     <string name="forgot_password">Forgot Password</string>
+
+    <string name="place_detail_untitled">İsimsiz mekân</string>
+    <string name="place_detail_lat_label">Enlem</string>
+    <string name="place_detail_lon_label">Boylam</string>
+    <string name="place_detail_location">Konum</string>
+    <string name="place_detail_about">Hakkında</string>
+    <string name="place_detail_title_bar">Mekân detayı</string>
+    <string name="place_detail_no_description">Bu mekân için henüz açıklama eklenmemiş.</string>
+    <string name="place_detail_missing_id">Geçersiz mekân kimliği.</string>
+    <string name="place_detail_not_found">Bu mekân kaydı bulunamadı.</string>
+
+    <string name="role_brand_title">iTravel</string>
+    <string name="role_slogan">Yeni yerler keşfetmeye hazır mısın?</string>
+    <string name="role_footer_hint">Rolünü seç ve yolculuğa başla</string>
+    <string name="role_logo_content_desc">Seyahat simgesi</string>
+    <string name="role_user_login">Kullanıcı girişi</string>
+    <string name="role_admin_login">Yönetici girişi</string>
+    <string name="admin_login_title">Yönetici oturumu</string>
+    <string name="admin_login_hint">Sadece yetkili yönetici hesabıyla giriş yapın.</string>
+    <string name="admin_login_wrong_email">Bu giriş yolu yalnızca tanımlı yönetici e-postası içindir.</string>
+    <string name="admin_login_failed_prefix">Giriş başarısız: </string>
+    <string name="admin_panel_title">Yönetici paneli</string>
+    <string name="admin_add_place">Yeni mekân ekle</string>
+    <string name="admin_edit">Düzenle</string>
+    <string name="admin_delete">Sil</string>
+    <string name="admin_edit_place_title">Mekân düzenle</string>
+    <string name="admin_add_place_title">Yeni mekân</string>
+    <string name="admin_pick_image">Görsel seç</string>
+    <string name="admin_field_title">Başlık</string>
+    <string name="admin_field_description">Açıklama</string>
+    <string name="admin_field_latitude">Enlem</string>
+    <string name="admin_field_longitude">Boylam</string>
+    <string name="admin_save">Kaydet</string>
+    <string name="admin_delete_place">Mekânı sil</string>
+    <string name="admin_delete_confirm_title">Silmek istediğinize emin misiniz?</string>
+    <string name="admin_delete_confirm_message">Bu mekân kalıcı olarak silinecek.</string>
+    <string name="admin_deleted">Silindi.</string>
+    <string name="admin_saved">Kaydedildi.</string>
+    <string name="admin_saving">Kaydediliyor…</string>
+    <string name="admin_deleting">Siliniyor…</string>
+    <string name="admin_place_required_fields">Başlık, enlem ve boylam zorunludur.</string>
+    <string name="admin_place_image_required">Yeni kayıt için görsel seçin.</string>
+    <string name="admin_place_id_error">Kayıt anahtarı oluşturulamadı.</string>
+    <string name="admin_area_only">Bu alan sadece yönetici içindir.</string>
+    <string name="email_required">E-posta gerekli.</string>
+    <string name="email_invalid">Geçerli bir e-posta girin.</string>
+    <string name="password_required">Şifre gerekli.</string>
+    <string name="admin_email_reserved">Bu e-posta yönetici hesabı için ayrılmıştır. Lütfen başka bir adres kullanın.</string>
+    <string name="use_admin_entry_for_admin">Yönetici hesabı için ana ekrandan «Yönetici girişi»ni kullanın.</string>
 
 </resources>

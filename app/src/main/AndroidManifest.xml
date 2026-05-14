@@ -20,10 +20,18 @@
         android:theme="@style/Theme.Itravel"
         android:usesCleartextTraffic="true">
 
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:exported="false"
-            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity android:name=".RoleSelectionActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AdminLoginActivity" android:exported="false"/>
+        <activity android:name=".AdminPanelActivity" android:exported="false"/>
+        <activity android:name=".AdminPlaceEditActivity" android:exported="false"/>
 
+        <activity android:name=".DetailActivity" android:exported="false"/>
         <activity android:name=".PostActivity" android:exported="false"/>
         <activity android:name=".MapActivity" android:exported="false"/>
         <activity android:name=".CityFinderActivity" android:exported="false"/>
@@ -44,12 +52,7 @@
         <activity android:name=".HomeActivity" android:exported="false"/>
         <activity android:name=".RegisterActivity" android:exported="false"/>
         <activity android:name=".LoginActivity" android:exported="false"/>
-        <activity android:name=".MainActivity" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity" android:exported="false"/>
 
     </application>
 

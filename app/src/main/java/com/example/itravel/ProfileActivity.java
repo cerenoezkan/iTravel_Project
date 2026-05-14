@@ -48,14 +48,12 @@ public class ProfileActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
+                SessionManager.signOutAndReturnToRoleSelection(ProfileActivity.this);
             }
         });
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference = FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL).getReference("Users");
         userID = user.getUid();
 
         final TextView usernameTextView = (TextView) findViewById(R.id.username_profile);
