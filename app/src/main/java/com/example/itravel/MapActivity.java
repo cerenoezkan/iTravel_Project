@@ -2,16 +2,12 @@ package com.example.itravel;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
@@ -27,10 +23,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,14 +40,11 @@ import com.karumi.dexter.listener.single.PermissionListener;
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     boolean isPermissionGranter;
-    GoogleMap googleMap, selectedGoogleMap;
+    GoogleMap googleMap;
 
     private DatabaseReference places;
-    private ChildEventListener childEventListener;
 
     Button logout;
-
-    Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,18 +64,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
         places = FirebaseDatabase.getInstance().getReference("Posts");
-        places.push().setValue(marker);
 
         checkPermission();
-        if (isPermissionGranter) {
-            if (checkGooglePlayGrancted()) {
-                SupportMapFragment supportMapFragment = SupportMapFragment.newInstance();
-                getSupportFragmentManager().beginTransaction().add(R.id.container, supportMapFragment).commit();
-                supportMapFragment.getMapAsync(this);
-            } else {
-                Toast.makeText(this, "Google PlayService Not Available", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     private boolean checkGooglePlayGrancted() {
@@ -113,7 +94,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                         isPermissionGranter = true;
-                        Toast.makeText(MapActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                        initMap();
                     }
 
                     @Override
@@ -132,6 +113,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }).check();
     }
 
+    private void initMap() {
+        if (!isPermissionGranter) {
+            return;
+        }
+        if (!checkGooglePlayGrancted()) {
+            Toast.makeText(this, "Google PlayService Not Available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+        if (supportMapFragment == null) {
+            supportMapFragment = SupportMapFragment.newInstance();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, supportMapFragment).commit();
+        }
+        supportMapFragment.getMapAsync(this);
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -143,7 +140,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s : snapshot.getChildren()) {
                     Post postmarker = s.getValue(Post.class);
-                    LatLng latLng = new LatLng(Double.parseDouble(postmarker.getLatitude()), Double.parseDouble(postmarker.getLongitude()));
+                    if (postmarker == null) {
+                        continue;
+                    }
+                    String latText = postmarker.getLatitude();
+                    String lngText = postmarker.getLongitude();
+                    if (latText == null || lngText == null || latText.trim().isEmpty() || lngText.trim().isEmpty()) {
+                        continue;
+                    }
+                    LatLng latLng;
+                    try {
+                        latLng = new LatLng(Double.parseDouble(latText), Double.parseDouble(lngText));
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
 
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.title(postmarker.getPlace()+" : " + latLng.latitude + " , " + latLng.longitude);
@@ -167,18 +177,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         googleMap.getUiSettings().setZoomGesturesEnabled(true);
         googleMap.getUiSettings().setScrollGesturesEnabled(true);
         googleMap.getUiSettings().setRotateGesturesEnabled(false);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+        if (isPermissionGranter) {
+            googleMap.setMyLocationEnabled(true);
         }
-        googleMap.setMyLocationEnabled(true);
 
     }
 }
