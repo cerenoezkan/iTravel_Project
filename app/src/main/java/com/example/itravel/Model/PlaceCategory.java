@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.example.itravel.R;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 /**
  * Fixed Istanbul place categories stored in Firebase as {@code category} field.
@@ -107,5 +108,25 @@ public final class PlaceCategory {
     @NonNull
     public static String normalize(@Nullable String key) {
         return isValid(key) ? key : HISTORICAL;
+    }
+
+    /** Google Maps marker hue by category. */
+    public static float markerHue(@Nullable String key) {
+        if (key == null) {
+            return BitmapDescriptorFactory.HUE_RED;
+        }
+        switch (key) {
+            case MUSEUMS:
+                return BitmapDescriptorFactory.HUE_AZURE;
+            case NATURE:
+                return BitmapDescriptorFactory.HUE_GREEN;
+            case FREE:
+                return BitmapDescriptorFactory.HUE_ORANGE;
+            case CAFES_RESTAURANTS:
+                return BitmapDescriptorFactory.HUE_VIOLET;
+            case HISTORICAL:
+            default:
+                return BitmapDescriptorFactory.HUE_RED;
+        }
     }
 }

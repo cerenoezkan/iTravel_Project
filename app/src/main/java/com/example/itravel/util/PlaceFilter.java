@@ -7,6 +7,7 @@ import com.example.itravel.Model.Place;
 import com.example.itravel.Model.PlaceCategory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class PlaceFilter {
@@ -42,5 +43,12 @@ public final class PlaceFilter {
             }
         }
         return out;
+    }
+
+    @NonNull
+    public static List<Place> sortByRatingDesc(@NonNull List<Place> places) {
+        List<Place> sorted = new ArrayList<>(places);
+        Collections.sort(sorted, (a, b) -> Double.compare(b.getRating(), a.getRating()));
+        return sorted;
     }
 }

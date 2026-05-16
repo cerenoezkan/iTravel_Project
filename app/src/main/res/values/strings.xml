@@ -55,6 +55,30 @@
     <string name="place_detail_rating">Puan</string>
     <string name="create_route">Rota Oluştur</string>
 
+    <!-- Place comments -->
+    <string name="similar_places_title">📍 Benzer Gezilecek Yerler</string>
+    <string name="comments_section_title">Ziyaretçi Yorumları</string>
+    <string name="comments_empty">Henüz yorum yapılmadı.</string>
+    <string name="comments_write_hint">Deneyimini paylaş</string>
+    <string name="comments_input_hint">Yorumunuzu yazın…</string>
+    <string name="comments_submit">Yorumu Gönder</string>
+    <string name="comments_update">Yorumu Güncelle</string>
+    <string name="comments_login_required_title">Giriş gerekli</string>
+    <string name="comments_login_required_message">Yorum yapabilmek için giriş yapmalısınız.</string>
+    <string name="comments_login_action">Giriş Yap</string>
+    <string name="comments_cancel">İptal</string>
+    <string name="comment_text_required">Lütfen yorum metni girin.</string>
+    <string name="comment_stars_required">Lütfen yıldız seçin.</string>
+    <string name="comment_saved">Yorumunuz gönderildi.</string>
+    <string name="comment_updated">Yorumunuz güncellendi.</string>
+    <string name="comment_deleted">Yorum silindi.</string>
+    <string name="comment_delete_title">Yorumu sil</string>
+    <string name="comment_delete_message">Bu yorumu silmek istediğinize emin misiniz?</string>
+    <string name="comment_delete">Sil</string>
+    <string name="comment_edit">Düzenle</string>
+    <string name="comment_anonymous">Ziyaretçi</string>
+    <string name="comment_save_failed">Yorum kaydedilemedi: %1$s</string>
+
     <!-- Route map -->
     <string name="route_title">Rota</string>
     <string name="route_distance">Mesafe: %1$.1f km</string>
@@ -65,6 +89,13 @@
     <string name="route_invalid_destination">Hedef konum geçersiz.</string>
     <string name="route_you">Konumunuz</string>
     <string name="route_destination">Hedef</string>
+    <string name="route_best_transport">En İyi Ulaşım Türü</string>
+    <string name="route_board_here">Buradan bin</string>
+    <string name="route_transport_walk">Yürüyüş</string>
+    <string name="route_transport_marmaray_walk">Marmaray + Yürüyüş</string>
+    <string name="route_transport_ferry_walk">Vapur + Yürüyüş</string>
+    <string name="route_transport_car">Araba ile</string>
+    <string name="route_transport_bus">Otobüs ile</string>
 
     <!-- Home -->
     <string name="home_istanbul_title">İstanbul\'u Keşfet</string>
@@ -78,6 +109,15 @@
     <string name="places_empty_category">Bu kategoride henüz mekân eklenmemiş.</string>
     <string name="map_title">Harita</string>
     <string name="explore">Keşfet</string>
+    <string name="nav_discover">Keşfet</string>
+    <string name="nav_map">Harita</string>
+    <string name="nav_popular">Popüler</string>
+    <string name="nav_profile">Profil</string>
+    <string name="popular_title">Popüler Mekânlar</string>
+    <string name="popular_subtitle">İstanbul\'un en yüksek puanlı noktaları</string>
+    <string name="popular_empty">Henüz popüler mekân bulunamadı.</string>
+    <string name="map_nearby_title">Yakınımdaki Mekânlar</string>
+    <string name="map_browse_subtitle">Tüm kategoriler • Konuma göre keşfet</string>
 
     <!-- Categories -->
     <string name="category_historical">Tarihi Yerler</string>
@@ -141,5 +181,13 @@
     <string name="view_profile">Profili Gör</string>
     <string name="profile_email_label">E-posta</string>
     <string name="profile_username_label">Kullanıcı Adı</string>
+    <string name="profile_change_photo">Profil Fotoğrafını Değiştir</string>
+    <string name="profile_photo_uploading">Fotoğraf yükleniyor…</string>
+    <string name="profile_photo_updated">Profil fotoğrafı güncellendi.</string>
+    <string name="profile_photo_failed">Fotoğraf yüklenemedi: %1$s</string>
+    <string name="profile_my_comments">Yorumlarım</string>
+    <string name="profile_my_comments_subtitle">Paylaştığın mekân deneyimleri</string>
+    <string name="profile_comments_empty">Henüz yorum yapmadınız.</string>
+    <string name="profile_comment_place_format">📍 %1$s</string>
 
 </resources>

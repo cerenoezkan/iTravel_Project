@@ -32,7 +32,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.example.itravel.util.MapPlaceUtils;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
@@ -211,7 +214,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 boolean hasMarker = false;
 
                 for (Place place : filtered) {
-                    LatLng latLng = latLngFromPlace(place);
+                    LatLng latLng = MapPlaceUtils.latLngFromPlace(place);
                     if (latLng == null) {
                         continue;
                     }
@@ -223,9 +226,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         markerTitle = getString(R.string.place_detail_untitled);
                     }
 
+                    float hue = PlaceCategory.markerHue(place.getCategory());
                     MarkerOptions options = new MarkerOptions()
                             .title(markerTitle)
-                            .position(latLng);
+                            .position(latLng)
+                            .icon(BitmapDescriptorFactory.defaultMarker(hue));
                     Marker marker = googleMap.addMarker(options);
                     if (marker != null) {
                         marker.setTag(placeId);
@@ -260,11 +265,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ImageView image = content.findViewById(R.id.sheet_place_image);
         TextView title = content.findViewById(R.id.sheet_place_title);
+        Chip category = content.findViewById(R.id.sheet_place_category);
         TextView rating = content.findViewById(R.id.sheet_place_rating);
         MaterialButton details = content.findViewById(R.id.sheet_btn_details);
 
         String t = nz(place.getTitle());
         title.setText(t.isEmpty() ? getString(R.string.place_detail_untitled) : t);
+        category.setText(getString(PlaceCategory.labelRes(place.getCategory())));
 
         if (place.getRating() > 0) {
             rating.setText(getString(R.string.place_rating_format, place.getRating()));
@@ -287,25 +294,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
 
         dialog.show();
-    }
-
-    @Nullable
-    private static LatLng latLngFromPlace(@NonNull Place place) {
-        try {
-            String la = place.getLatitude();
-            String lo = place.getLongitude();
-            if (la == null || lo == null) {
-                return null;
-            }
-            la = la.trim();
-            lo = lo.trim();
-            if (la.isEmpty() || lo.isEmpty()) {
-                return null;
-            }
-            return new LatLng(Double.parseDouble(la), Double.parseDouble(lo));
-        } catch (NumberFormatException e) {
-            return null;
-        }
     }
 
     private static String nz(@Nullable String s) {

@@ -1,4 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="BottomNavActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">#1A14502E</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="Theme.Itravel" parent="Theme.Material3.Light.NoActionBar">
 
@@ -8,6 +13,13 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/green</item>
         <item name="android:navigationBarColor">@color/white</item>
+    </style>
+
+    <style name="Widget.App.CommentRatingBar" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="colorControlActivated">@color/green</item>
+        <item name="android:progressTint">@color/green</item>
+        <item name="android:secondaryProgressTint">@color/nav_unselected</item>
+        <item name="android:progressBackgroundTint">@color/nav_unselected</item>
     </style>
 
     <style name="LabelStyle">

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Profile header: avatar center sits on cover bottom edge -->
+  <dimen name="profile_cover_height">220dp</dimen>
+  <dimen name="profile_avatar_size">128dp</dimen>
+  <dimen name="profile_avatar_margin_top">156dp</dimen>
+  <dimen name="profile_avatar_overlap_padding">76dp</dimen>
+</resources>

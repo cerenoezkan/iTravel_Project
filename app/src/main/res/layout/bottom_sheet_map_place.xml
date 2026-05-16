@@ -26,6 +26,18 @@
         android:textStyle="bold"
         tools:text="Ayasofya" />
 
+    <com.google.android.material.chip.Chip
+        android:id="@+id/sheet_place_category"
+        style="@style/Widget.Material3.Chip.Assist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clickable="false"
+        android:textColor="@color/green"
+        app:chipBackgroundColor="#1A14502E"
+        app:chipStrokeWidth="0dp"
+        tools:text="Tarihi Yerler" />
+
     <TextView
         android:id="@+id/sheet_place_rating"
         android:layout_width="match_parent"

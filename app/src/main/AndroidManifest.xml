@@ -51,6 +51,7 @@
 
         <activity android:name=".SplashScreenActivity" android:exported="false"/>
         <activity android:name=".HomeActivity" android:exported="false"/>
+        <activity android:name=".PopularPlacesActivity" android:exported="false"/>
         <activity android:name=".CategoryPlacesActivity" android:exported="false"/>
         <activity android:name=".RegisterActivity" android:exported="false"/>
         <activity android:name=".LoginActivity" android:exported="false"/>

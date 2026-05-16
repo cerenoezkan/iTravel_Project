@@ -39,5 +39,7 @@
     <color name="home_surface">#FFFFFFFF</color>
     <color name="home_ripple">#3314502E</color>
     <color name="home_card_shadow">#1A14502E</color>
+    <color name="nav_unselected">#FF9AA89F</color>
+    <color name="nav_shadow">#1A000000</color>
 
 </resources>

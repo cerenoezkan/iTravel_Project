@@ -16,6 +16,7 @@
             android:id="@+id/category_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/menu_category_map"
             app:navigationIcon="@drawable/arrow"
             app:titleTextColor="@color/green" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -40,15 +41,5 @@
         android:text="@string/places_empty_category"
         android:textColor="@color/role_text_muted"
         android:visibility="gone" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fab_map_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:text="@string/view_on_map"
-        app:icon="@drawable/map_white"
-        app:iconTint="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -14,7 +14,6 @@ import com.example.itravel.Model.Place;
 import com.example.itravel.Model.PlaceCategory;
 import com.example.itravel.util.PlaceFilter;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,15 +47,20 @@ public class CategoryPlacesActivity extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.category_toolbar);
         toolbar.setTitle(PlaceCategory.labelRes(categoryKey));
         toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_map) {
+                MapActivity.launch(this, categoryKey);
+                overridePendingTransition(R.anim.nav_fade_in, R.anim.nav_fade_out);
+                return true;
+            }
+            return false;
+        });
 
         RecyclerView rv = findViewById(R.id.rv_places);
         emptyView = findViewById(R.id.empty_places);
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PlaceAdapter(new ArrayList<>());
         rv.setAdapter(adapter);
-
-        ExtendedFloatingActionButton fabMap = findViewById(R.id.fab_map_category);
-        fabMap.setOnClickListener(v -> MapActivity.launch(this, categoryKey));
 
         placesRef = FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL)
                 .getReference(ItravelApp.RTDB_NODE_PLACES);

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:strokeColor="#12000000"
+    app:strokeWidth="0.5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="14dp">
+
+        <FrameLayout
+            android:id="@+id/comment_avatar_wrap"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_comment_avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/person_green" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/comment_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/sf_pro_display_regular"
+            android:maxLines="1"
+            android:textColor="@color/role_text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/comment_actions"
+            app:layout_constraintStart_toEndOf="@id/comment_avatar_wrap"
+            app:layout_constraintTop_toTopOf="@id/comment_avatar_wrap"
+            tools:text="Ayşe K." />
+
+        <LinearLayout
+            android:id="@+id/comment_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <ImageButton
+                android:id="@+id/btn_edit_comment"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/comment_edit"
+                android:padding="6dp"
+                android:src="@drawable/ic_comment_edit"
+                app:tint="@color/green" />
+
+            <ImageButton
+                android:id="@+id/btn_delete_comment"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/comment_delete"
+                android:padding="6dp"
+                android:src="@drawable/ic_comment_delete"
+                app:tint="@color/green" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/comment_stars_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@id/comment_avatar_wrap"
+            app:layout_constraintTop_toBottomOf="@id/comment_username" />
+
+        <TextView
+            android:id="@+id/comment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/sf_pro_display_regular"
+            android:textColor="@color/role_text_muted"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/comment_stars_row"
+            app:layout_constraintStart_toEndOf="@id/comment_stars_row"
+            app:layout_constraintTop_toTopOf="@id/comment_stars_row"
+            tools:text="12 May 2026" />
+
+        <TextView
+            android:id="@+id/comment_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/sf_pro_display_regular"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/role_text_primary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comment_avatar_wrap"
+            tools:text="Muhteşem bir deneyimdi, mutlaka görülmeli." />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
