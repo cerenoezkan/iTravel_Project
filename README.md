@@ -1,69 +1,166 @@
-# iTravel - Capture, Share, and Explore Your Travel Adventures
+# iTravel Istanbul App
 
-iTravel is an Android application developed with Java and Firebase, designed for adventurers and travel enthusiasts. It allows you to capture and store memorable moments during your travels, complete with location coordinates, and share them with the iTravel community. Explore the world through shared images, and easily locate the places you've visited on an interactive map.
+<img width="2000" height="1200" alt="iTravel Istanbul (1)" src="https://github.com/user-attachments/assets/5efafc53-01f5-436c-bb56-dd5dca55040a" />
 
-<div style="display: flex; margin: 10px; text-align-last: center;">
-  <img src="https://github.com/mohamedwahbiyaakoub/itravel-project-master/blob/main/blob/screen1.jpg?raw=true" alt="iTravel Screenshot 1" width="300" />
-  <img src="https://github.com/mohamedwahbiyaakoub/itravel-project-master/blob/main/blob/screen2.jpg?raw=true" alt="iTravel Screenshot 2" width="300" />
-  <img src="https://github.com/mohamedwahbiyaakoub/itravel-project-master/blob/main/blob/screen3.jpg?raw=true" alt="iTravel Screenshot 3" width="300" />
-</div>
+iTravel, kullanıcıların İstanbul’daki tarihi, kültürel, doğal ve popüler noktaları keşfetmesini sağlayan modern bir mobil gezi uygulamasıdır.  
+Uygulama; harita tabanlı keşif sistemi, rota oluşturma, kullanıcı yorumları, popüler mekan önerileri ve yönetici paneli gibi birçok özelliği bir arada sunmaktadır.
 
+---
 
+# Proje Amacı
 
-## Features
+Bu projenin amacı, İstanbul’u ziyaret eden veya şehirde yaşayan kullanıcıların:
+- yeni yerler keşfetmesini,
+- mekanlar hakkında detaylı bilgi almasını,
+- harita üzerinden konumları görüntülemesini,
+- rota oluşturmasını,
+- deneyimlerini yorumlayarak paylaşmasını
+  sağlayan kullanıcı dostu bir şehir keşif platformu geliştirmektir.
 
-- **Capture Memories:** Snap and save photos of your travel adventures, preserving the memories of beautiful places you've visited.
+---
 
-- **Geo-Tagging:** Automatically associate captured photos with their location coordinates, making it easy to remember where each photo was taken.
+# Uygulama Özellikleri
 
-- **Share with the World:** Share your travel experiences by publishing your photos to the iTravel community.
+## Kullanıcı Sistemi
+- Kullanıcı kayıt olma ve giriş sistemi
+- Firebase Authentication entegrasyonu
+- Profil sayfası oluşturma
+- Profil fotoğrafı güncelleme
+- Kullanıcı yorumlarını görüntüleme
 
-- **Discover Wonders:** Explore a curated collection of travel memories shared by other iTravel users.
+## İstanbul Keşif Sistemi
+Kullanıcılar:
+- tarihi yerleri,
+- müzeleri,
+- doğal alanları,
+- ücretsiz gezilebilecek mekanları,
+- popüler kafeleri ve restoranları
+  kategori bazlı şekilde keşfedebilir.
 
-- **Interactive Map:** View your travel photos on an interactive map, helping you retrace your steps and plan future adventures.
+## Harita ve Konum Servisleri
+- Google Maps API entegrasyonu
+- Mekanların harita üzerinde görüntülenmesi
+- Kategoriye göre marker sistemi
+- Kullanıcının konumuna göre yakın mekan önerileri
+- Konum bazlı keşif ekranı
 
-## Getting Started
+## Rota Oluşturma
+Kullanıcı mevcut konumundan seçilen mekana:
+- rota oluşturabilir,
+- mesafe bilgisi görüntüleyebilir,
+- tahmini ulaşım süresini görebilir.
 
-### Prerequisites
+## Mekan Detay Sistemi
+Her mekan için:
+- görsel,
+- açıklama,
+- kategori,
+- puan,
+- konum bilgileri,
+- benzer önerilen yerler
+  sunulmaktadır.
 
-Before you begin, ensure you have met the following requirements:
+## Yorum ve Puanlama Sistemi
+Firebase Realtime Database kullanılarak:
+- yorum ekleme,
+- yorum güncelleme,
+- yorum silme,
+- yıldız puanlama
+  işlemleri gerçekleştirilmiştir.
 
+## Yönetici Paneli
+Yönetici sistemi sayesinde:
+- yeni mekan ekleme,
+- mekan düzenleme,
+- mekan silme,
+- kategori filtreleme
+  işlemleri yapılabilmektedir.
+
+Bu bölümde CRUD (Create, Read, Update, Delete) işlemleri aktif olarak kullanılmaktadır.
+
+---
+
+# Kullanılan Teknolojiler
+
+- Java
 - Android Studio
-- Android SDK
-- Firebase Account (for backend storage)
+- Firebase Authentication
+- Firebase Realtime Database
+- Firebase Storage
+- Google Maps API
+- Material Design Components
+- RecyclerView
+- CardView
+- ConstraintLayout
 
-### Installation
+---
 
-1. Clone the repository:
+# Firebase Kullanımı
 
-   ```bash
-   git clone https://github.com/mohamedwahbiyaakoub/itravel-project-master.git
+Projede Firebase aktif olarak kullanılmıştır:
 
-2. Open the project in Android Studio.
+- Firebase Authentication → kullanıcı giriş/kayıt sistemi
+- Firebase Realtime Database → mekanlar, yorumlar ve kullanıcı verileri
+- Firebase Storage → profil ve mekan görselleri
 
-3. Configure Firebase for backend storage (follow Firebase setup instructions).
+Realtime Database üzerinde:
+- veri ekleme,
+- veri çekme,
+- veri güncelleme,
+- veri silme
+  işlemleri gerçekleştirilmiştir.
 
-4. Build and run the application on your Android emulator or physical device.
+---
 
-## Usage
+# Uygulama Ekranları
 
-#### 1. Capture Memories:
+## Giriş ve Karşılama Ekranları
+- Modern onboarding ekranı
+- Kullanıcı ve yönetici giriş sistemi
 
-- Launch the iTravel app.
-- Use the built-in camera to capture your travel moments.
-- Add descriptions and tags to your photos.
+## Keşfet Sayfası
+- İstanbul tanıtımı
+- Kategori bazlı keşif sistemi
+- Mekan önerileri
 
-#### 2. Share Your Adventures:
+## Harita Sistemi
+- Mekan markerları
+- Yakındaki yerleri keşfetme
+- Konum bazlı görüntüleme
 
-Publish your photos to share your adventures with the iTravel community.
-Your photos will automatically include location coordinates.
+## Mekan Detay Sayfası
+- Detaylı açıklamalar
+- Yorum sistemi
+- Puanlama sistemi
+- Benzer mekan önerileri
+- Rota oluşturma
 
-#### 3. Explore Shared Memories:
+## Yönetici Paneli
+- Mekan ekleme
+- Mekan düzenleme
+- Mekan silme
+- Firebase veri yönetimi
 
-Browse through shared travel memories from other iTravel users.
-Discover new places and get inspired for your next journey.
+---
 
-#### 4. Interactive Map:
+# APK
 
-Access the map view to see your photos pinned to their respective locations.
-Easily navigate to spots you've visited before.
+Uygulamayı denemek isteyen kullanıcılar için:
+
+🔗 [APK İndir](https://github.com/sumeyyegull/iTravel_Project/releases/download/v1.0/app-debug.apk)
+
+Not:
+- Android cihazlarda bilinmeyen kaynaklara izin verilmesi gerekmektedir.
+- Android 8.0 (API 26) ve üzeri cihazlarda test edilmiştir.
+
+---
+
+# Geliştiriciler
+
+- Sümeyye Gül
+- Fatma Yaşar
+- Ceren Özkan
+
+Bilgisayar Mühendisliği Öğrencileri
+
+Android | Java | Firebase | Google Maps
