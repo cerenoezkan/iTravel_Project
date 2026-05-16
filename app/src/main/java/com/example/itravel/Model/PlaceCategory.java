@@ -86,7 +86,7 @@ public final class PlaceCategory {
             case FREE:
                 return R.drawable.cat_ucretsiz;
             case CAFES_RESTAURANTS:
-                return R.drawable.cat_cafe;
+                return R.drawable.cat_cafeler;
             case HISTORICAL:
             default:
                 return R.drawable.cat_tarihi;
