@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="place_category_keys">
+        <item>historical</item>
+        <item>museums</item>
+        <item>nature</item>
+        <item>free</item>
+        <item>cafes_restaurants</item>
+    </string-array>
+</resources>

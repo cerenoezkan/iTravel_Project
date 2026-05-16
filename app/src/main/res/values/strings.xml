@@ -1,45 +1,104 @@
 <resources>
 
-    <string name="app_name">Itravel</string>
+    <string name="app_name">iTravel</string>
+
+    <!-- Auth -->
+    <string name="sign_up">Kayıt Ol</string>
+    <string name="sign_in">Giriş Yap</string>
+    <string name="back">Geri Dön</string>
+    <string name="email">E-posta</string>
+    <string name="password">Şifre</string>
+    <string name="did_you_forget_you_password">Şifremi Unuttum</string>
+    <string name="login_now">Giriş Yap</string>
+    <string name="phone_number">Telefon Numarası</string>
+    <string name="confirm_password">Şifre Tekrar</string>
+    <string name="register_now">Hesap Oluştur</string>
+    <string name="logout">Çıkış Yap</string>
+    <string name="username">Kullanıcı Adı</string>
+    <string name="cover_pic">Kapak Görseli</string>
+    <string name="add_a_new_post">Yeni gönderi ekle</string>
+    <string name="forgot_password">Şifremi Unuttum</string>
+    <string name="login_subtitle">Merhaba İstanbul</string>
+    <string name="register_subtitle">Hadi İstanbul\'u Keşfedelim</string>
+    <string name="forgot_password_hint">E-posta adresinizi girin, size şifre sıfırlama bağlantısı gönderelim.</string>
+    <string name="forgot_password_send">Sıfırlama Bağlantısı Gönder</string>
+    <string name="reset_link_sent">Sıfırlama bağlantısı e-postanıza gönderildi.</string>
+    <string name="reset_link_failed">Bağlantı gönderilemedi: %1$s</string>
+    <string name="please_wait">Lütfen bekleyin…</string>
+    <string name="login_failed">Giriş başarısız: %1$s</string>
+    <string name="register_success">Hesabınız başarıyla oluşturuldu!</string>
+    <string name="register_failed">Kayıt başarısız: %1$s</string>
+    <string name="profile_save_failed">Profil kaydedilemedi: %1$s</string>
+    <string name="session_expired">Oturum sona erdi, lütfen tekrar giriş yapın.</string>
+    <string name="something_wrong">Bir hata oluştu.</string>
+    <string name="profile_not_found">Profil bulunamadı.</string>
+
+    <!-- Role selection -->
     <string name="role_card_title">Keşfet. Planla. Yolculuk et.</string>
     <string name="role_card_subtitle">Unutulmaz deneyimler seni bekliyor.</string>
-    <string name="sign_up">Sign up</string>
-    <string name="sign_in">Sign in</string>
-    <string name="back">BACK</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="did_you_forget_you_password">Did you forget you password ?</string>
-    <string name="login_now">Login Now</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="register_now">Register Now</string>
-    <string name="logout">Logout</string>
-    <string name="username">Username</string>
-    <string name="cover_pic">COVER PIC</string>
-    <string name="add_a_new_post">Add a new post</string>
-    <string name="forgot_password">Forgot Password</string>
+    <string name="role_footer_hint">Rolünü seç ve yolculuğa başla</string>
+    <string name="role_trust_footer">Güvenli giriş • Hızlı erişim • Kolay kullanım</string>
+    <string name="role_user_login">Kullanıcı girişi</string>
+    <string name="role_admin_login">Yönetici girişi</string>
 
+    <!-- Place detail -->
     <string name="place_detail_untitled">İsimsiz mekân</string>
     <string name="place_detail_lat_label">Enlem</string>
     <string name="place_detail_lon_label">Boylam</string>
     <string name="place_detail_location">Konum</string>
     <string name="place_detail_about">Hakkında</string>
-    <string name="place_detail_title_bar">Mekân detayı</string>
+    <string name="place_detail_title_bar">Mekân Detayı</string>
     <string name="place_detail_no_description">Bu mekân için henüz açıklama eklenmemiş.</string>
     <string name="place_detail_missing_id">Geçersiz mekân kimliği.</string>
     <string name="place_detail_not_found">Bu mekân kaydı bulunamadı.</string>
+    <string name="place_detail_category">Kategori</string>
+    <string name="place_detail_rating">Puan</string>
+    <string name="create_route">Rota Oluştur</string>
 
-    <string name="role_brand_title">iTravel</string>
-    <string name="role_slogan">Yeni yerler keşfetmeye hazır mısın?</string>
-    <string name="role_footer_hint">Rolünü seç ve yolculuğa başla</string>
-    <string name="role_logo_content_desc">Seyahat simgesi</string>
-    <string name="role_user_login">Kullanıcı girişi</string>
-    <string name="role_admin_login">Yönetici girişi</string>
-    <string name="admin_login_title">Yönetici oturumu</string>
-    <string name="admin_login_hint">Sadece yetkili yönetici hesabıyla giriş yapın.</string>
-    <string name="admin_login_wrong_email">Bu giriş yolu yalnızca tanımlı yönetici e-postası içindir.</string>
+    <!-- Route map -->
+    <string name="route_title">Rota</string>
+    <string name="route_distance">Mesafe: %1$.1f km</string>
+    <string name="route_duration">Tahmini süre: %1$d dk</string>
+    <string name="route_open_google_maps">Google Maps\'te Aç</string>
+    <string name="route_location_loading">Konumunuz alınıyor…</string>
+    <string name="route_location_denied">Konum izni gerekli. Ayarlardan izin verin.</string>
+    <string name="route_invalid_destination">Hedef konum geçersiz.</string>
+    <string name="route_you">Konumunuz</string>
+    <string name="route_destination">Hedef</string>
+
+    <!-- Home -->
+    <string name="home_istanbul_title">İstanbul\'u Keşfet</string>
+    <string name="home_istanbul_description">İstanbul, yüzyıllar boyunca Roma, Bizans ve Osmanlı İmparatorluklarına başkentlik yapmış eşsiz bir şehirdir. Tarihi yapıları, görkemli camileri, sarayları, renkli sokakları ve büyüleyici Boğaz manzarasıyla geçmiş ile modern yaşamı bir araya getirir. Zengin kültürü, lezzetli yemekleri ve canlı atmosferiyle ziyaretçilerine unutulmaz bir keşif deneyimi sunar.</string>
+    <string name="home_categories_title">Kategoriler</string>
+    <string name="home_categories_subtitle">İstanbul\'da keşfetmek istediğin alanı seç</string>
+    <string name="view_on_map">Haritada Gör</string>
+    <string name="view_details">Detayları Gör</string>
+    <string name="place_rating_format">★ %.1f</string>
+    <string name="place_rating_none">Henüz puan yok</string>
+    <string name="places_empty_category">Bu kategoride henüz mekân eklenmemiş.</string>
+    <string name="map_title">Harita</string>
+    <string name="explore">Keşfet</string>
+
+    <!-- Categories -->
+    <string name="category_historical">Tarihi Yerler</string>
+    <string name="category_museums">Müzeler</string>
+    <string name="category_nature">Doğa</string>
+    <string name="category_free">Ücretsiz Yerler</string>
+    <string name="category_cafes">Kafeler &amp; Restoranlar</string>
+    <string name="category_other">Diğer</string>
+    <string name="category_historical_desc">Ayasofya, Topkapı ve daha fazlası</string>
+    <string name="category_museums_desc">Sanat ve kültür müzeleri</string>
+    <string name="category_nature_desc">Parklar, adalar ve yeşil alanlar</string>
+    <string name="category_free_desc">Ücretsiz gezilebilecek noktalar</string>
+    <string name="category_cafes_desc">Lezzet durakları ve kafeler</string>
+    <string name="category_other_desc">İstanbul\'daki diğer mekânlar</string>
+
+    <!-- Admin -->
+    <string name="admin_login_title">Yönetici Girişi</string>
+    <string name="admin_login_hint">Yetkili yönetici hesabınızla giriş yapın.</string>
+    <string name="admin_login_wrong_email">Bu giriş yalnızca tanımlı yönetici e-postası içindir.</string>
     <string name="admin_login_failed_prefix">Giriş başarısız: </string>
-    <string name="admin_panel_title">Yönetici paneli</string>
+    <string name="admin_panel_title">Yönetici Paneli</string>
     <string name="admin_add_place">Yeni mekân ekle</string>
     <string name="admin_edit">Düzenle</string>
     <string name="admin_delete">Sil</string>
@@ -50,6 +109,9 @@
     <string name="admin_field_description">Açıklama</string>
     <string name="admin_field_latitude">Enlem</string>
     <string name="admin_field_longitude">Boylam</string>
+    <string name="admin_field_category">Kategori</string>
+    <string name="admin_field_rating">Puan (0–5)</string>
+    <string name="admin_field_city">Şehir</string>
     <string name="admin_save">Kaydet</string>
     <string name="admin_delete_place">Mekânı sil</string>
     <string name="admin_delete_confirm_title">Silmek istediğinize emin misiniz?</string>
@@ -62,10 +124,22 @@
     <string name="admin_place_image_required">Yeni kayıt için görsel seçin.</string>
     <string name="admin_place_id_error">Kayıt anahtarı oluşturulamadı.</string>
     <string name="admin_area_only">Bu alan sadece yönetici içindir.</string>
+    <string name="admin_filter_all">Tümü</string>
+    <string name="admin_place_category_required">Kategori seçin.</string>
+    <string name="admin_rating_invalid">Puan 0 ile 5 arasında olmalıdır.</string>
     <string name="email_required">E-posta gerekli.</string>
     <string name="email_invalid">Geçerli bir e-posta girin.</string>
     <string name="password_required">Şifre gerekli.</string>
-    <string name="admin_email_reserved">Bu e-posta yönetici hesabı için ayrılmıştır. Lütfen başka bir adres kullanın.</string>
-    <string name="use_admin_entry_for_admin">Yönetici hesabı için ana ekrandan «Yönetici girişi»ni kullanın.</string>
+    <string name="username_required">Kullanıcı adı gerekli.</string>
+    <string name="password_min_length">Şifre en az 6 karakter olmalıdır.</string>
+    <string name="password_mismatch">Şifreler eşleşmiyor.</string>
+    <string name="admin_email_reserved">Bu e-posta yönetici hesabı için ayrılmıştır.</string>
+    <string name="use_admin_entry_for_admin">Yönetici hesabı için «Yönetici girişi»ni kullanın.</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Profilim</string>
+    <string name="view_profile">Profili Gör</string>
+    <string name="profile_email_label">E-posta</string>
+    <string name="profile_username_label">Kullanıcı Adı</string>
 
 </resources>

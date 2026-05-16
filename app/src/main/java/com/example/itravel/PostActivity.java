@@ -135,7 +135,10 @@ public class PostActivity extends AppCompatActivity {
                                                         desc.isEmpty() ? null : desc,
                                                         latET.getText().toString().trim(),
                                                         lonET.getText().toString().trim(),
-                                                        imageDownloadLink
+                                                        imageDownloadLink,
+                                                        com.example.itravel.Model.PlaceCategory.CITY_ISTANBUL,
+                                                        com.example.itravel.Model.PlaceCategory.HISTORICAL,
+                                                        0d
                                                 );
 
                                                 refPost.setValue(place)

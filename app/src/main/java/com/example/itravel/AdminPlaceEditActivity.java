@@ -1,11 +1,12 @@
 package com.example.itravel;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.itravel.Model.Place;
+import com.example.itravel.Model.PlaceCategory;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -32,16 +34,20 @@ import com.google.firebase.storage.UploadTask;
 public class AdminPlaceEditActivity extends AppCompatActivity {
 
     public static final String EXTRA_PLACE_ID = "placeId";
+    public static final String EXTRA_CATEGORY = "category";
 
     private String editPlaceId;
     private String existingImageUrl = "";
     private Uri newImageUri = null;
+    private String selectedCategory = PlaceCategory.HISTORICAL;
 
     private DatabaseReference placesRef;
     private TextInputEditText titleEt;
     private TextInputEditText descEt;
     private TextInputEditText latEt;
     private TextInputEditText lonEt;
+    private TextInputEditText ratingEt;
+    private AutoCompleteTextView categoryEt;
     private ImageView imageView;
     private MaterialButton deleteBtn;
     private ProgressDialog progressDialog;
@@ -69,6 +75,11 @@ public class AdminPlaceEditActivity extends AppCompatActivity {
         editPlaceId = getIntent().getStringExtra(EXTRA_PLACE_ID);
         boolean editMode = !TextUtils.isEmpty(editPlaceId);
 
+        String presetCategory = getIntent().getStringExtra(EXTRA_CATEGORY);
+        if (PlaceCategory.isValid(presetCategory)) {
+            selectedCategory = presetCategory;
+        }
+
         placesRef = FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL)
                 .getReference(ItravelApp.RTDB_NODE_PLACES);
 
@@ -80,10 +91,14 @@ public class AdminPlaceEditActivity extends AppCompatActivity {
         descEt = findViewById(R.id.admin_edit_description);
         latEt = findViewById(R.id.admin_edit_lat);
         lonEt = findViewById(R.id.admin_edit_lon);
+        ratingEt = findViewById(R.id.admin_edit_rating);
+        categoryEt = findViewById(R.id.admin_edit_category);
         imageView = findViewById(R.id.admin_edit_image);
         deleteBtn = findViewById(R.id.admin_edit_delete);
         MaterialButton pickBtn = findViewById(R.id.admin_edit_pick_image);
         MaterialButton saveBtn = findViewById(R.id.admin_edit_save);
+
+        setupCategoryDropdown();
 
         progressDialog = new ProgressDialog(this);
 
@@ -95,6 +110,35 @@ public class AdminPlaceEditActivity extends AppCompatActivity {
             deleteBtn.setVisibility(View.VISIBLE);
             loadExistingPlace();
         }
+    }
+
+    private void setupCategoryDropdown() {
+        String[] labels = new String[PlaceCategory.ALL_KEYS.length];
+        for (int i = 0; i < PlaceCategory.ALL_KEYS.length; i++) {
+            labels[i] = getString(PlaceCategory.labelRes(PlaceCategory.ALL_KEYS[i]));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, labels);
+        categoryEt.setAdapter(adapter);
+
+        int index = indexOfCategory(selectedCategory);
+        if (index >= 0) {
+            categoryEt.setText(labels[index], false);
+        }
+
+        categoryEt.setOnItemClickListener((parent, view, position, id) -> {
+            if (position >= 0 && position < PlaceCategory.ALL_KEYS.length) {
+                selectedCategory = PlaceCategory.ALL_KEYS[position];
+            }
+        });
+    }
+
+    private int indexOfCategory(String key) {
+        for (int i = 0; i < PlaceCategory.ALL_KEYS.length; i++) {
+            if (PlaceCategory.ALL_KEYS[i].equals(key)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private void loadExistingPlace() {
@@ -111,6 +155,12 @@ public class AdminPlaceEditActivity extends AppCompatActivity {
                 descEt.setText(p.getDescription() != null ? p.getDescription() : "");
                 latEt.setText(p.getLatitude() != null ? p.getLatitude() : "");
                 lonEt.setText(p.getLongitude() != null ? p.getLongitude() : "");
+                if (p.getRating() > 0) {
+                    ratingEt.setText(String.valueOf(p.getRating()));
+                }
+                selectedCategory = PlaceCategory.normalize(p.getCategory());
+                categoryEt.setText(getString(PlaceCategory.labelRes(selectedCategory)), false);
+
                 existingImageUrl = p.getImageUrl() != null ? p.getImageUrl() : "";
                 if (!existingImageUrl.isEmpty()) {
                     Glide.with(AdminPlaceEditActivity.this).load(existingImageUrl).centerCrop().into(imageView);
@@ -154,9 +204,15 @@ public class AdminPlaceEditActivity extends AppCompatActivity {
         String desc = textOf(descEt);
         String lat = textOf(latEt);
         String lon = textOf(lonEt);
+        double rating = parseRating();
 
         if (title.isEmpty() || lat.isEmpty() || lon.isEmpty()) {
             Toast.makeText(this, R.string.admin_place_required_fields, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (rating < 0 || rating > 5) {
+            Toast.makeText(this, R.string.admin_rating_invalid, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -165,48 +221,73 @@ public class AdminPlaceEditActivity extends AppCompatActivity {
             return;
         }
 
+        resolveCategoryFromField();
+
         progressDialog.setMessage(getString(R.string.admin_saving));
         progressDialog.show();
 
         if (newImageUri != null) {
-            uploadThenSave(editMode, title, desc, lat, lon);
+            uploadThenSave(editMode, title, desc, lat, lon, rating);
         } else if (editMode) {
-            String descOrNull = desc.isEmpty() ? null : desc;
-            Place place = new Place(editPlaceId, title, descOrNull, lat, lon, existingImageUrl);
-            placesRef.child(editPlaceId).setValue(place)
-                    .addOnSuccessListener(unused -> finishOk())
-                    .addOnFailureListener(e -> finishError(e.getMessage()));
+            persist(editMode, title, desc, lat, lon, existingImageUrl, rating);
         }
     }
 
-    private void uploadThenSave(boolean editMode, String title, String desc, String lat, String lon) {
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("imagePost");
-        StorageReference fileRef = storageRef.child(System.currentTimeMillis() + ".jpg");
+    private void resolveCategoryFromField() {
+        String label = categoryEt.getText() != null ? categoryEt.getText().toString().trim() : "";
+        for (String key : PlaceCategory.ALL_KEYS) {
+            if (getString(PlaceCategory.labelRes(key)).equals(label)) {
+                selectedCategory = key;
+                return;
+            }
+        }
+        selectedCategory = PlaceCategory.normalize(selectedCategory);
+    }
+
+    private double parseRating() {
+        String raw = textOf(ratingEt);
+        if (raw.isEmpty()) {
+            return 0d;
+        }
+        try {
+            return Double.parseDouble(raw.replace(',', '.'));
+        } catch (NumberFormatException e) {
+            return -1d;
+        }
+    }
+
+    private void uploadThenSave(boolean editMode, String title, String desc, String lat, String lon, double rating) {
+        StorageReference fileRef = FirebaseStorage.getInstance().getReference()
+                .child("imagePost")
+                .child(System.currentTimeMillis() + ".jpg");
         fileRef.putFile(newImageUri)
                 .addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> fileRef.getDownloadUrl()
-                        .addOnSuccessListener(uri -> {
-                            String url = uri.toString();
-                            String descOrNull = desc.isEmpty() ? null : desc;
-                            if (editMode) {
-                                Place place = new Place(editPlaceId, title, descOrNull, lat, lon, url);
-                                placesRef.child(editPlaceId).setValue(place)
-                                        .addOnSuccessListener(unused -> finishOk())
-                                        .addOnFailureListener(e -> finishError(e.getMessage()));
-                            } else {
-                                DatabaseReference ref = placesRef.push();
-                                String id = ref.getKey();
-                                if (id == null) {
-                                    finishError(getString(R.string.admin_place_id_error));
-                                    return;
-                                }
-                                Place place = new Place(id, title, descOrNull, lat, lon, url);
-                                ref.setValue(place)
-                                        .addOnSuccessListener(unused -> finishOk())
-                                        .addOnFailureListener(e -> finishError(e.getMessage()));
-                            }
-                        })
+                        .addOnSuccessListener(uri -> persist(editMode, title, desc, lat, lon, uri.toString(), rating))
                         .addOnFailureListener(e -> finishError(e.getMessage())))
                 .addOnFailureListener(e -> finishError(e.getMessage()));
+    }
+
+    private void persist(boolean editMode, String title, String desc, String lat, String lon, String imageUrl, double rating) {
+        String descOrNull = desc.isEmpty() ? null : desc;
+        if (editMode) {
+            Place place = new Place(editPlaceId, title, descOrNull, lat, lon, imageUrl,
+                    PlaceCategory.CITY_ISTANBUL, selectedCategory, rating);
+            placesRef.child(editPlaceId).setValue(place)
+                    .addOnSuccessListener(unused -> finishOk())
+                    .addOnFailureListener(e -> finishError(e.getMessage()));
+        } else {
+            DatabaseReference ref = placesRef.push();
+            String id = ref.getKey();
+            if (id == null) {
+                finishError(getString(R.string.admin_place_id_error));
+                return;
+            }
+            Place place = new Place(id, title, descOrNull, lat, lon, imageUrl,
+                    PlaceCategory.CITY_ISTANBUL, selectedCategory, rating);
+            ref.setValue(place)
+                    .addOnSuccessListener(unused -> finishOk())
+                    .addOnFailureListener(e -> finishError(e.getMessage()));
+        }
     }
 
     private void finishOk() {

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_bg"
+    tools:context=".RouteMapActivity">
+
+    <FrameLayout
+        android:id="@+id/route_map_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/route_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:elevation="4dp"
+        app:layout_anchor="@id/route_map_container"
+        app:layout_anchorGravity="top"
+        app:navigationIcon="@drawable/arrow"
+        app:title="@string/route_title"
+        app:titleTextColor="@color/green" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/route_bottom_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="18dp"
+        app:strokeColor="#1A14502E"
+        app:strokeWidth="0.5dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="14dp">
+
+            <View
+                android:id="@+id/route_sheet_handle"
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:background="@drawable/bg_sheet_handle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/route_icon_wrap"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_route_icon_circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/route_sheet_handle">
+
+                <ImageView
+                    android:id="@+id/route_transport_icon"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_route_transport" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/route_dest_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:maxLines="1"
+                android:textColor="@color/role_text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/route_icon_wrap"
+                app:layout_constraintTop_toTopOf="@id/route_icon_wrap"
+                tools:text="Ayasofya" />
+
+            <TextView
+                android:id="@+id/route_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:textColor="@color/green"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/route_icon_wrap"
+                app:layout_constraintTop_toBottomOf="@id/route_dest_title"
+                tools:text="Mesafe: 4.2 km" />
+
+            <View
+                android:id="@+id/route_stats_divider"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_sheet_handle"
+                app:layout_constraintBottom_toBottomOf="@id/route_distance"
+                app:layout_constraintStart_toEndOf="@id/route_distance"
+                app:layout_constraintTop_toTopOf="@id/route_distance" />
+
+            <TextView
+                android:id="@+id/route_duration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:maxLines="1"
+                android:textColor="@color/role_text_muted"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@id/route_distance"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/route_stats_divider"
+                app:layout_constraintTop_toTopOf="@id/route_distance"
+                tools:text="Tahmini süre: 12 dk" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <ProgressBar
+        android:id="@+id/route_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

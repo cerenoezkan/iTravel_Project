@@ -31,6 +31,11 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        if (SessionManager.isAdminSession(this) && mAuth.getCurrentUser() != null) {
+            SessionManager.launchAdminPanel(this);
+            return;
+        }
+
         MaterialToolbar toolbar = findViewById(R.id.admin_login_toolbar);
         toolbar.setNavigationOnClickListener(v -> navigateBackToRoleSelection());
 
@@ -94,8 +99,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                     return;
                 }
                 SessionManager.setAdminRole(AdminLoginActivity.this);
-                startActivity(new Intent(getApplicationContext(), AdminPanelActivity.class));
-                finish();
+                SessionManager.launchAdminPanel(AdminLoginActivity.this);
             }
         });
     }

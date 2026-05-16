@@ -1,55 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/bg">
+    android:background="@drawable/bg"
+    tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="48dp"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:gravity="center_vertical|center_horizontal">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Logging Button Design -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_white"
-            android:layout_margin="20dp"
-
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
-
-
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_outline_white"
             android:text="@string/sign_in"
+            android:textAllCaps="false"
             android:textColor="@color/green"
-            android:fontFamily="@font/sf_pro_display_regular"
+            android:textSize="15sp"
             android:textStyle="bold"
-            />
+            app:backgroundTint="@null"
+            app:cornerRadius="14dp"
+            app:rippleColor="@color/home_ripple"
+            app:strokeColor="@color/green"
+            app:strokeWidth="1.5dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_register"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn"
-            android:layout_margin="20dp"
-
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
-
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_primary"
             android:text="@string/sign_up"
+            android:textAllCaps="false"
             android:textColor="@color/white"
-            android:fontFamily="@font/sf_pro_display_regular"
+            android:textSize="15sp"
             android:textStyle="bold"
-            />
-
+            app:backgroundTint="@null"
+            app:cornerRadius="14dp"
+            app:rippleColor="#44FFFFFF" />
     </LinearLayout>
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

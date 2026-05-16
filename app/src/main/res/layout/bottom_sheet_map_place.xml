@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/sheet_place_image"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/noimage" />
+
+    <TextView
+        android:id="@+id/sheet_place_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:fontFamily="@font/sf_pro_display_regular"
+        android:textColor="@color/role_text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Ayasofya" />
+
+    <TextView
+        android:id="@+id/sheet_place_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/sf_pro_display_regular"
+        android:textColor="@color/green"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:text="★ 4.8" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sheet_btn_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:minHeight="48dp"
+        android:text="@string/view_details"
+        app:cornerRadius="14dp" />
+</LinearLayout>

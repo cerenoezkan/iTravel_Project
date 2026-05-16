@@ -21,11 +21,23 @@
     <color name="role_gradient_bottom">#1A5C45</color>
     <color name="role_horizon_glow">#6BA88C</color>
     <color name="role_scrim">#66051A14</color>
+    <color name="role_krem">#FFF7F4EC</color>
     <color name="role_cream">#FFF7F4EC</color>
-    <color name="role_surface_glass">#E6FFFFFF</color>
+    <color name="role_surface_glass">#F2FFFFFF</color>
+    <color name="role_card_stroke">#40FFFFFF</color>
     <color name="role_on_dark_secondary">#CCF0F4F0</color>
+    <color name="role_green_primary">#FF14502E</color>
+    <color name="role_green_deep">#FF0D3A22</color>
+    <color name="role_text_primary">#FF1A2E28</color>
+    <color name="role_text_muted">#FF6B7B73</color>
+    <color name="role_text_on_hero">#FF2A3D36</color>
     <color name="role_primary_cta">#FF14502E</color>
     <color name="role_primary_cta_pressed">#FF0D3A22</color>
     <color name="role_outline_light">#99FFFFFF</color>
+
+    <color name="home_bg">#FFF8F6F2</color>
+    <color name="home_surface">#FFFFFFFF</color>
+    <color name="home_ripple">#3314502E</color>
+    <color name="home_card_shadow">#1A14502E</color>
 
 </resources>

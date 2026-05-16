@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itravel.Adapter.AdminPlaceAdapter;
 import com.example.itravel.Model.Place;
+import com.example.itravel.Model.PlaceCategory;
+import com.example.itravel.util.PlaceFilter;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +34,10 @@ public class AdminPanelActivity extends AppCompatActivity implements AdminPlaceA
     private DatabaseReference placesRef;
     private ValueEventListener placesListener;
     private AdminPlaceAdapter adapter;
+    private List<Place> allPlaces = new ArrayList<>();
+
+    @Nullable
+    private String selectedCategoryFilter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +60,21 @@ public class AdminPanelActivity extends AppCompatActivity implements AdminPlaceA
             return false;
         });
 
+        setupCategoryChips();
+
         RecyclerView rv = findViewById(R.id.admin_places_rv);
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdminPlaceAdapter(this);
         rv.setAdapter(adapter);
 
         FloatingActionButton fab = findViewById(R.id.admin_fab_add);
-        fab.setOnClickListener(v -> startActivity(new Intent(this, AdminPlaceEditActivity.class)));
+        fab.setOnClickListener(v -> {
+            Intent i = new Intent(this, AdminPlaceEditActivity.class);
+            if (selectedCategoryFilter != null) {
+                i.putExtra(AdminPlaceEditActivity.EXTRA_CATEGORY, selectedCategoryFilter);
+            }
+            startActivity(i);
+        });
 
         placesRef = FirebaseDatabase.getInstance(ItravelApp.FIREBASE_RTDB_URL)
                 .getReference(ItravelApp.RTDB_NODE_PLACES);
@@ -65,14 +82,14 @@ public class AdminPanelActivity extends AppCompatActivity implements AdminPlaceA
         placesListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Place> list = new ArrayList<>();
+                allPlaces = new ArrayList<>();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     Place p = Place.fromSnapshot(child);
                     if (p != null && p.getId() != null && !p.getId().isEmpty()) {
-                        list.add(p);
+                        allPlaces.add(p);
                     }
                 }
-                adapter.setPlaces(list);
+                applyFilter();
             }
 
             @Override
@@ -81,6 +98,50 @@ public class AdminPanelActivity extends AppCompatActivity implements AdminPlaceA
             }
         };
         placesRef.addValueEventListener(placesListener);
+    }
+
+    private void setupCategoryChips() {
+        ChipGroup group = findViewById(R.id.admin_category_chips);
+
+        Chip allChip = new Chip(this);
+        allChip.setText(R.string.admin_filter_all);
+        allChip.setCheckable(true);
+        allChip.setChecked(true);
+        allChip.setTag("");
+        group.addView(allChip);
+
+        for (String key : PlaceCategory.ALL_KEYS) {
+            Chip chip = new Chip(this);
+            chip.setText(getString(PlaceCategory.labelRes(key)));
+            chip.setCheckable(true);
+            chip.setTag(key);
+            group.addView(chip);
+        }
+
+        group.setOnCheckedStateChangeListener((chipGroup, checkedIds) -> {
+            if (checkedIds.isEmpty()) {
+                selectedCategoryFilter = null;
+            } else {
+                Chip checked = chipGroup.findViewById(checkedIds.get(0));
+                if (checked != null) {
+                    Object tag = checked.getTag();
+                    if (tag instanceof String && !((String) tag).isEmpty()) {
+                        selectedCategoryFilter = (String) tag;
+                    } else {
+                        selectedCategoryFilter = null;
+                    }
+                }
+            }
+            applyFilter();
+        });
+    }
+
+    private void applyFilter() {
+        if (selectedCategoryFilter == null) {
+            adapter.setPlaces(PlaceFilter.forIstanbul(allPlaces));
+        } else {
+            adapter.setPlaces(PlaceFilter.byCategory(allPlaces, selectedCategoryFilter));
+        }
     }
 
     @Override
@@ -119,8 +180,4 @@ public class AdminPanelActivity extends AppCompatActivity implements AdminPlaceA
                 .show();
     }
 
-    @Override
-    public void onBackPressed() {
-        logoutAdmin();
-    }
 }

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.itravel.Model.Place;
+import com.example.itravel.Model.PlaceCategory;
 import com.example.itravel.R;
 import com.google.android.material.button.MaterialButton;
 
@@ -46,10 +47,17 @@ public class AdminPlaceAdapter extends RecyclerView.Adapter<AdminPlaceAdapter.VH
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position) {
         Place p = data.get(position);
-        holder.title.setText(p.getTitle() != null && !p.getTitle().isEmpty() ? p.getTitle() : holder.itemView.getContext().getString(R.string.place_detail_untitled));
+        holder.title.setText(p.getTitle() != null && !p.getTitle().isEmpty()
+                ? p.getTitle()
+                : holder.itemView.getContext().getString(R.string.place_detail_untitled));
+
+        String category = holder.itemView.getContext().getString(PlaceCategory.labelRes(p.getCategory()));
+        String ratingText = p.getRating() > 0
+                ? holder.itemView.getContext().getString(R.string.place_rating_format, p.getRating())
+                : holder.itemView.getContext().getString(R.string.place_rating_none);
         String lat = p.getLatitude() != null ? p.getLatitude() : "";
         String lon = p.getLongitude() != null ? p.getLongitude() : "";
-        holder.subtitle.setText(lat + ", " + lon);
+        holder.subtitle.setText(category + " • " + ratingText + "\n" + lat + ", " + lon);
 
         holder.edit.setOnClickListener(v -> listener.onEdit(p));
         holder.delete.setOnClickListener(v -> listener.onDelete(p));

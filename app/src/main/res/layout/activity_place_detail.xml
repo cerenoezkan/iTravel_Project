@@ -1,58 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/detail_bg"
-    android:orientation="vertical"
-    tools:context=".PlaceDetailActivity">
+    android:background="@color/home_bg"
+    tools:context=".DetailActivity">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/detail_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
-        android:elevation="6dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="8dp"
-        android:paddingEnd="16dp">
-
-        <ImageView
-            android:id="@+id/detail_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back"
-            android:padding="10dp"
-            android:src="@drawable/arrow" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/sf_pro_display_regular"
-            android:text="@string/place_detail_title_bar"
-            android:textColor="@color/green"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+        app:navigationIcon="@drawable/arrow"
+        app:title="@string/place_detail_title_bar"
+        app:titleTextColor="@color/green" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         android:clipToPadding="false"
         android:fillViewport="true"
-        android:padding="16dp">
+        android:paddingBottom="88dp">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/detail_card"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp"
-            app:strokeColor="@color/green"
-            app:strokeWidth="1dp">
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,7 +41,7 @@
                 <ImageView
                     android:id="@+id/detail_hero_image"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
+                    android:layout_height="260dp"
                     android:contentDescription="@null"
                     android:scaleType="centerCrop"
                     tools:src="@drawable/noimage" />
@@ -74,24 +53,45 @@
                     android:paddingStart="22dp"
                     android:paddingTop="20dp"
                     android:paddingEnd="22dp"
-                    android:paddingBottom="24dp">
+                    android:paddingBottom="22dp">
 
                     <TextView
                         android:id="@+id/detail_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sf_pro_display_regular"
-                        android:letterSpacing="0.02"
-                        android:textColor="@color/black"
+                        android:textColor="@color/role_text_primary"
                         android:textSize="26sp"
                         android:textStyle="bold"
-                        tools:text="Kız Kulesi" />
+                        tools:text="Ayasofya" />
+
+                    <TextView
+                        android:id="@+id/detail_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textColor="@color/green"
+                        android:textSize="14sp"
+                        tools:text="Tarihi Yerler" />
+
+                    <TextView
+                        android:id="@+id/detail_rating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textColor="@color/green"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:text="★ 4.8" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="18dp"
                         android:fontFamily="@font/sf_pro_display_regular"
+                        android:letterSpacing="0.06"
                         android:text="@string/place_detail_location"
                         android:textAllCaps="true"
                         android:textColor="@color/detail_muted"
@@ -104,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:lineSpacingExtra="4dp"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/role_text_muted"
                         android:textSize="15sp"
                         tools:text="Enlem 41.021\nBoylam 29.004" />
 
@@ -119,6 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sf_pro_display_regular"
+                        android:letterSpacing="0.06"
                         android:text="@string/place_detail_about"
                         android:textAllCaps="true"
                         android:textColor="@color/detail_muted"
@@ -131,11 +132,33 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:lineSpacingMultiplier="1.35"
-                        android:textColor="@color/black"
+                        android:textColor="@color/role_text_primary"
                         android:textSize="16sp"
-                        tools:text="Boğazın incisi..." />
+                        tools:text="Açıklama metni…" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_create_route"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_btn_primary"
+        android:text="@string/create_route"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/map_white"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconTint="@color/white" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

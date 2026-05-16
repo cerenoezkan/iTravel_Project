@@ -34,6 +34,7 @@
         <activity android:name=".DetailActivity" android:exported="false"/>
         <activity android:name=".PostActivity" android:exported="false"/>
         <activity android:name=".MapActivity" android:exported="false"/>
+        <activity android:name=".RouteMapActivity" android:exported="false"/>
         <activity android:name=".CityFinderActivity" android:exported="false"/>
         <activity android:name=".WeatherActivity" android:exported="false"/>
         <activity android:name=".EditProfileActivity" android:exported="false"/>
@@ -50,6 +51,7 @@
 
         <activity android:name=".SplashScreenActivity" android:exported="false"/>
         <activity android:name=".HomeActivity" android:exported="false"/>
+        <activity android:name=".CategoryPlacesActivity" android:exported="false"/>
         <activity android:name=".RegisterActivity" android:exported="false"/>
         <activity android:name=".LoginActivity" android:exported="false"/>
         <activity android:name=".MainActivity" android:exported="false"/>

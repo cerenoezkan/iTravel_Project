@@ -1,32 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:angle="165"
-                android:centerColor="@color/role_gradient_mid"
-                android:endColor="@color/role_gradient_bottom"
-                android:startColor="@color/role_gradient_top"
-                android:type="linear" />
-        </shape>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/role_hero_bg" />
     </item>
-    <item>
-        <shape android:shape="rectangle">
-            <gradient
-                android:angle="90"
-                android:centerY="0.35"
-                android:endColor="@android:color/transparent"
-                android:startColor="@color/role_scrim"
-                android:type="linear" />
-        </shape>
-    </item>
-    <item android:gravity="bottom">
-        <shape android:shape="rectangle">
-            <gradient
-                android:angle="90"
-                android:endColor="#4D051A14"
-                android:startColor="@android:color/transparent"
-                android:type="linear" />
-        </shape>
-    </item>
+    <item android:drawable="@drawable/bg_role_scrim_only" />
 </layer-list>

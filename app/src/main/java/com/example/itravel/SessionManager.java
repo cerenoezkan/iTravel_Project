@@ -29,7 +29,25 @@ public final class SessionManager {
     public static void signOutAndReturnToRoleSelection(Activity activity) {
         FirebaseAuth.getInstance().signOut();
         clear(activity.getApplicationContext());
-        activity.startActivity(new Intent(activity, RoleSelectionActivity.class));
+        Intent intent = new Intent(activity, RoleSelectionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    /** Kullanıcı ana ekranına gider; geri ile giriş ekranına dönülmez. */
+    public static void launchUserHome(Activity activity) {
+        Intent intent = new Intent(activity, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    /** Yönetici paneline gider; geri ile giriş ekranına dönülmez. */
+    public static void launchAdminPanel(Activity activity) {
+        Intent intent = new Intent(activity, AdminPanelActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
         activity.finish();
     }
 

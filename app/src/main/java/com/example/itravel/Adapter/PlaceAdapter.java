@@ -12,34 +12,50 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.itravel.DetailActivity;
 import com.example.itravel.Model.Place;
+import com.example.itravel.Model.PlaceCategory;
 import com.example.itravel.R;
 
 import java.util.List;
 
-public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.MyViewHolder> {
+public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.VH> {
 
     private final List<Place> placeData;
 
-    public PlaceAdapter(List<Place> placeData) {
+    public PlaceAdapter(@NonNull List<Place> placeData) {
         this.placeData = placeData;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_items, parent, false);
-        return new MyViewHolder(view);
+    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_place_list, parent, false);
+        return new VH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VH holder, int position) {
         Place place = placeData.get(position);
-        holder.place_txt_v.setText(place.getTitle());
-        holder.lat_txt_v.setText(place.getLatitude());
-        holder.lng_txt_v.setText(place.getLongitude());
-        Glide.with(holder.itemView.getContext())
-                .load(place.getImageUrl())
-                .into(holder.post_img_v);
+        String title = place.getTitle() != null ? place.getTitle() : "";
+        holder.title.setText(title.isEmpty()
+                ? holder.itemView.getContext().getString(R.string.place_detail_untitled)
+                : title);
+
+        double rating = place.getRating();
+        if (rating > 0) {
+            holder.rating.setText(holder.itemView.getContext().getString(
+                    R.string.place_rating_format, rating));
+        } else {
+            holder.rating.setText(R.string.place_rating_none);
+        }
+
+        holder.subtitle.setText(PlaceCategory.labelRes(place.getCategory()));
+
+        String img = place.getImageUrl();
+        if (img != null && !img.isEmpty()) {
+            Glide.with(holder.itemView.getContext()).load(img).centerCrop().into(holder.image);
+        } else {
+            holder.image.setImageResource(R.drawable.noimage);
+        }
 
         holder.itemView.setOnClickListener(v -> {
             if (place.getId() != null && !place.getId().isEmpty()) {
@@ -53,16 +69,18 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.MyViewHolder
         return placeData.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView post_img_v;
-        TextView place_txt_v, lat_txt_v, lng_txt_v;
+    static class VH extends RecyclerView.ViewHolder {
+        ImageView image;
+        TextView title;
+        TextView rating;
+        TextView subtitle;
 
-        public MyViewHolder(@NonNull View itemView) {
+        VH(@NonNull View itemView) {
             super(itemView);
-            post_img_v = itemView.findViewById(R.id.post_img_v);
-            place_txt_v = itemView.findViewById(R.id.place_txt_v);
-            lat_txt_v = itemView.findViewById(R.id.lat_txt_v);
-            lng_txt_v = itemView.findViewById(R.id.lng_txt_v);
+            image = itemView.findViewById(R.id.place_image);
+            title = itemView.findViewById(R.id.place_title);
+            rating = itemView.findViewById(R.id.place_rating);
+            subtitle = itemView.findViewById(R.id.place_subtitle);
         }
     }
 }
